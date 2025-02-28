@@ -104,17 +104,46 @@ function App() {
     }
   }
 
+  const pageVariants = {
+    initial: {
+      opacity: 0,
+      y: 20
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.6
+      }
+    }
+  }
+
   return (
-    <div className="main-container">
+    <motion.div 
+      className="main-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
       {/* Hero Section */}
       <section className="hero-section">
         <motion.div 
           className="hero-content"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          variants={pageVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
         >
           <motion.h1
+            className="font-heading text-display mb-4"
             key={currentText.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -125,6 +154,7 @@ function App() {
           {currentText.lines.map((line, index) => (
             <motion.h2
               key={line}
+              className="font-body text-h2 font-light"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -134,76 +164,96 @@ function App() {
           ))}
         </motion.div>
         
-        <div className="circular-container">
-          <div className="circle-wrapper">
-            <div className="text-circle">
-              <div className="inner-circle">
-                <div className="image-container">
-                  <motion.div 
-                    className="image-wrapper"
-                    animate={{ 
-                      rotateY: isRotating ? 360 : 0
-                    }}
-                    transition={{
-                      duration: 0.3,
-                      ease: "linear"
-                    }}
-                    style={{ 
-                      perspective: 1000,
-                      transformStyle: "preserve-3d",
-                      position: "relative",
-                      width: "100%",
-                      height: "100%"
-                    }}
-                  >
-                    <motion.img 
-                      src={currentImage}
-                      alt="Showcase"
-                      className="main-image"
-                      style={{ 
-                        backfaceVisibility: "hidden",
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={currentSection}
+            className="circular-container"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 200,
+              damping: 20
+            }}
+          >
+            <div className="circle-wrapper">
+              <div className="text-circle">
+                <div className="inner-circle">
+                  <div className="image-container">
+                    <motion.div 
+                      className="image-wrapper"
+                      animate={{ 
+                        rotateY: isRotating ? 360 : 0
                       }}
-                    />
-                  </motion.div>
+                      transition={{
+                        duration: 0.3,
+                        ease: "linear"
+                      }}
+                      style={{ 
+                        perspective: 1000,
+                        transformStyle: "preserve-3d",
+                        position: "relative",
+                        width: "100%",
+                        height: "100%"
+                      }}
+                    >
+                      <motion.img 
+                        src={currentImage}
+                        alt="Showcase"
+                        className="main-image"
+                        style={{ 
+                          backfaceVisibility: "hidden",
+                        }}
+                      />
+                    </motion.div>
+                  </div>
                 </div>
+                
+                <span 
+                  onClick={() => handleTextClick('modern equipment')}
+                  className="circle-text"
+                  style={{ top: '-20px', left: '50%', transform: 'translateX(-50%)' }}
+                >
+                  modern equipment
+                </span>
+                <span 
+                  onClick={() => handleTextClick('expert team')}
+                  className="circle-text"
+                  style={{ top: '50%', right: '-100px', transform: 'translateY(-50%)' }}
+                >
+                  expert team
+                </span>
+                <span 
+                  onClick={() => handleTextClick('sharp editing')}
+                  className="circle-text"
+                  style={{ bottom: '-20px', left: '50%', transform: 'translateX(-50%)' }}
+                >
+                  sharp editing
+                </span>
+                <span 
+                  onClick={() => handleTextClick('cinematic experience')}
+                  className="circle-text"
+                  style={{ top: '50%', left: '-100px', transform: 'translateY(-50%)' }}
+                >
+                  cinematic experience
+                </span>
               </div>
-              
-              <span 
-                onClick={() => handleTextClick('modern equipment')}
-                className="circle-text"
-                style={{ top: '-20px', left: '50%', transform: 'translateX(-50%)' }}
-              >
-                modern equipment
-              </span>
-              <span 
-                onClick={() => handleTextClick('expert team')}
-                className="circle-text"
-                style={{ top: '50%', right: '-100px', transform: 'translateY(-50%)' }}
-              >
-                expert team
-              </span>
-              <span 
-                onClick={() => handleTextClick('sharp editing')}
-                className="circle-text"
-                style={{ bottom: '-20px', left: '50%', transform: 'translateX(-50%)' }}
-              >
-                sharp editing
-              </span>
-              <span 
-                onClick={() => handleTextClick('cinematic experience')}
-                className="circle-text"
-                style={{ top: '50%', left: '-100px', transform: 'translateY(-50%)' }}
-              >
-                cinematic experience
-              </span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </section>
 
-      {renderCurrentSection()}
+      <AnimatePresence mode="wait">
+        {renderCurrentSection()}
+      </AnimatePresence>
 
-      <div className="expertise-nav">
+      <motion.div 
+        className="expertise-nav"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
         <button 
           className={`nav-item ${currentSection === 'media' ? 'active' : ''}`}
           onClick={() => handleSectionChange('media')}
@@ -222,7 +272,7 @@ function App() {
         >
           Design & Development
         </button>
-      </div>
+      </motion.div>
 
       {/* Story Section */}
       <section className="story-section">
@@ -260,7 +310,7 @@ function App() {
           ))}
         </div>
       </section>
-    </div>
+    </motion.div>
   )
 }
 

@@ -1,3 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Poppins', sans-serif;
+}
+
+@layer utilities {
+  .smooth-scroll {
+    @apply scroll-smooth;
+  }
+}
+
+html {
+  @apply smooth-scroll;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hero-content h1 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.hero-content h2 {
+  font-family: var(--font-body);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+.circle-text {
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.story-content h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.story-content h4 {
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.story-content p {
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.expertise-section h3 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.nav-item {
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Smooth transitions */
+.transition-all {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Add hover effects */
+.hover-scale {
+  @apply hover:scale-105 transition-transform duration-300;
+}
+
+/* Add smooth page transitions */
+.page-transition {
+  @apply transition-opacity duration-500;
+}
