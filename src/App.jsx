@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import { motion, AnimatePresence } from 'framer-motion'
 import MediaProduction from './components/MediaProduction'
 import DigitalMarketing from './components/DigitalMarketing'
 import DesignDevelopment from './components/DesignDevelopment'
