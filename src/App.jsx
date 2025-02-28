@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import { motion, AnimatePresence } from 'framer-motion'
 import MediaProduction from './components/MediaProduction'
 import DigitalMarketing from './components/DigitalMarketing'
 import DesignDevelopment from './components/DesignDevelopment'
@@ -8,11 +7,35 @@ import DesignDevelopment from './components/DesignDevelopment'
 function App() {
   const [currentImage, setCurrentImage] = useState('/profile.jpg')
   const [isRotating, setIsRotating] = useState(false)
+  const [currentSection, setCurrentSection] = useState('media')
   const [currentText, setCurrentText] = useState({
     title: 'TOG',
     lines: ['reflected', 'visual story', 'telling']
   })
-  const [currentSection, setCurrentSection] = useState('media') // 'media', 'digital', 'design'
+
+  const sectionTextConfig = {
+    media: {
+      title: 'MEDIA',
+      lines: ['production', 'visual story', 'creation']
+    },
+    digital: {
+      title: 'DIGITAL',
+      lines: ['marketing', 'strategic', 'solutions']
+    },
+    design: {
+      title: 'DESIGN',
+      lines: ['development', 'creative', 'solutions']
+    }
+  }
+
+  const handleSectionChange = (section) => {
+    setCurrentSection(section)
+    setIsRotating(true)
+    setCurrentText(sectionTextConfig[section])
+    setTimeout(() => {
+      setIsRotating(false)
+    }, 300)
+  }
 
   const imageConfig = {
     'modern equipment': '/modern-equipment.jpg',
@@ -21,8 +44,28 @@ function App() {
     'cinematic experience': '/cinematic-experience.jpg'
   }
 
+  const textConfig = {
+    'modern equipment': {
+      title: 'MODERN',
+      lines: ['equipment', 'for best', 'results']
+    },
+    'expert team': {
+      title: 'EXPERT',
+      lines: ['professional', 'creative', 'team']
+    },
+    'sharp editing': {
+      title: 'SHARP',
+      lines: ['precise', 'editing', 'skills']
+    },
+    'cinematic experience': {
+      title: 'CINEMATIC',
+      lines: ['visual', 'story', 'experience']
+    }
+  }
+
   const handleTextClick = (text) => {
     setIsRotating(true)
+    setCurrentText(textConfig[text])
     setTimeout(() => {
       setCurrentImage(imageConfig[text])
       setIsRotating(false)
@@ -64,12 +107,31 @@ function App() {
     <div className="main-container">
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-content">
-          <h1>TOG</h1>
-          <h2>reflected</h2>
-          <h2>visual story</h2>
-          <h2>telling</h2>
-        </div>
+        <motion.div 
+          className="hero-content"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.h1
+            key={currentText.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {currentText.title}
+          </motion.h1>
+          {currentText.lines.map((line, index) => (
+            <motion.h2
+              key={line}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              {line}
+            </motion.h2>
+          ))}
+        </motion.div>
         
         <div className="circular-container">
           <div className="circle-wrapper">
@@ -143,19 +205,19 @@ function App() {
       <div className="expertise-nav">
         <button 
           className={`nav-item ${currentSection === 'media' ? 'active' : ''}`}
-          onClick={() => setCurrentSection('media')}
+          onClick={() => handleSectionChange('media')}
         >
           Media Production
         </button>
         <button 
           className={`nav-item ${currentSection === 'digital' ? 'active' : ''}`}
-          onClick={() => setCurrentSection('digital')}
+          onClick={() => handleSectionChange('digital')}
         >
           Digital Marketing
         </button>
         <button 
           className={`nav-item ${currentSection === 'design' ? 'active' : ''}`}
-          onClick={() => setCurrentSection('design')}
+          onClick={() => handleSectionChange('design')}
         >
           Design & Development
         </button>
